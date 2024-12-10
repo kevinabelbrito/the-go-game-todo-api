@@ -10,9 +10,9 @@ export const validateTask = [
 
 export const getTasks = async (req: Request, res: Response) => {
   try {
-    // const userId = (req as any).user.email;
+    const userId = (req as any).user.email;
     const snapshot = await db.collection('tasks')
-      // .where('userId', '==', userId)
+      .where('userId', '==', userId)
       .orderBy('createdAt', 'desc')
       .get();
     const tasks: Task[] = [];
@@ -40,7 +40,7 @@ export const addTask = async (req: Request, res: Response) => {
   }
 
   try {
-    // const userId = (req as any).user.email;
+    const userId = (req as any).user.email;
     const { title, description } = req.body;
     const taskRef = db.collection('tasks').doc();
     const newTask = {
@@ -48,7 +48,7 @@ export const addTask = async (req: Request, res: Response) => {
       description,
       createdAt: new Date(),
       status: 'pending',
-      // userId,
+      userId,
     };
     await taskRef.set(newTask);
     res.status(201).json({
@@ -68,13 +68,13 @@ export const updateTask = async (req: Request, res: Response) => {
   }
 
   try {
-    // const userId = (req as any).user.email;
+    const userId = (req as any).user.email;
     const { taskId } = req.params;
     const { title, description } = req.body;
     const taskRef = db.collection('tasks').doc(taskId);
     const task = await taskRef.get();
 
-    if (!task.exists /*|| task.data()?.userId !== userId*/) {
+    if (!task.exists || task.data()?.userId !== userId) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
@@ -87,12 +87,12 @@ export const updateTask = async (req: Request, res: Response) => {
 
 export const deleteTask = async (req: Request, res: Response) => {
   try {
-    // const userId = (req as any).user.email;
+    const userId = (req as any).user.email;
     const { taskId } = req.params;
     const taskRef = db.collection('tasks').doc(taskId);
     const task = await taskRef.get();
 
-    if (!task.exists /*|| task.data()?.userId !== userId*/) {
+    if (!task.exists || task.data()?.userId !== userId) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
@@ -105,12 +105,12 @@ export const deleteTask = async (req: Request, res: Response) => {
 
 export const toggleTaskStatus = async (req: Request, res: Response) => {
   try {
-    // const userId = (req as any).user.email;
+    const userId = (req as any).user.email;
     const { taskId } = req.params;
     const taskRef = db.collection('tasks').doc(taskId);
     const task = await taskRef.get();
 
-    if (!task.exists /*|| task.data()?.userId !== userId*/) {
+    if (!task.exists || task.data()?.userId !== userId) {
       return res.status(404).json({ message: 'Task not found' });
     }
 

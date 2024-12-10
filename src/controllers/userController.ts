@@ -19,7 +19,7 @@ export const getUserByEmail = async (req: Request, res: Response) => {
         const userSnapshot = await db.collection('users').where('email', '==', email).get();
 
         if (userSnapshot.empty) {
-        return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         const user = userSnapshot.docs[0].data() as User;
@@ -43,7 +43,7 @@ export const addUser = async (req: Request, res: Response) => {
 
         const existingUserSnapshot = await db.collection('users').where('email', '==', email).get();
         if (!existingUserSnapshot.empty) {
-        return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ message: 'User already exists' });
         }
 
         await userRef.set(newUser);
