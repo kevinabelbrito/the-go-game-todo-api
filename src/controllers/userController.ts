@@ -5,7 +5,7 @@ import { generateToken, verifyToken } from '../config/jwtConfig';
 import { User } from '../interfaces/user';
 
 export const validateUser = [
-    body('email').isEmail().withMessage('Invalid email format'),
+    body('email').notEmpty().isEmail().withMessage('Invalid email format'),
 ];
 
 export const getUserByEmail = async (req: Request, res: Response) => {
