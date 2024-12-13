@@ -24,7 +24,7 @@ export const getUserByEmail = async (req: Request, res: Response) => {
 
         const user = userSnapshot.docs[0].data() as User;
         const token = generateToken(email);
-        res.json({ user, token });
+        res.json({ user: {...user, id: userSnapshot.docs[0].id}, token });
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch user' });
     }
@@ -48,7 +48,7 @@ export const addUser = async (req: Request, res: Response) => {
 
         await userRef.set(newUser);
         const token = generateToken(email);
-        res.status(201).json({ id: userRef.id, ...newUser, token });
+        res.status(201).json({ user: {id: userRef.id, ...newUser}, token });
     } catch (error) {
         res.status(500).json({ message: 'Failed to add user' });
     }
