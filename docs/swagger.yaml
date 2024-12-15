@@ -4,9 +4,16 @@ info:
   description: API for managing tasks
   version: 1.0.0
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api
     description: Local server
+  - url: https://the-go-game-todo-api.onrender.com/api
+    description: Remote server
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     User:
       type: object
@@ -209,6 +216,8 @@ paths:
       tags:
         - Task
       summary: Get all tasks for the authenticated user
+      security:
+      - BearerAuth: []
       responses:
         '200':
           description: A list of tasks
@@ -226,6 +235,8 @@ paths:
       tags:
         - Task
       summary: Add a new task
+      security:
+      - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -264,6 +275,8 @@ paths:
       tags:
         - Task
       summary: Update a task
+      security:
+      - BearerAuth: []
       parameters:
         - name: taskId
           in: path
@@ -307,6 +320,8 @@ paths:
       tags:
         - Task
       summary: Delete a task
+      security:
+      - BearerAuth: []
       parameters:
         - name: taskId
           in: path
@@ -329,6 +344,8 @@ paths:
         - Task
       summary: Toggle the status of a task
       description: Updates the status of a task between `pending` and `completed` for the authenticated user.
+      security:
+      - BearerAuth: []
       parameters:
         - name: taskId
           in: path
